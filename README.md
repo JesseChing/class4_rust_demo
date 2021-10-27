@@ -79,4 +79,4 @@ fn area<T:Shape>(shape: &T){
 ```
 
 ## 运行结果截图
-![ScreenShot of Server ](ScreenShot.png)
+![ScreenShot.png运行结果截图](ScreenShot.png)
