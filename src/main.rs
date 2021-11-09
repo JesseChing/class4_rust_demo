@@ -1,12 +1,6 @@
-
+use std::{f64::consts::PI, process::Output};
 
 fn main() {
-
-    let square = Square{};
-    area(&square);
-
-    let circle = Circle{};
-    area(&circle);
 
     let green_light = TrafficLight::Green;
     println!("green light time:{}", green_light.time());
@@ -28,6 +22,17 @@ fn main() {
     
     // assert_eq!(Option::Some(6), sum(&nums1));
     // assert_eq!(Option::None, sum(&nums2));
+
+    println!("第三题：实现一个打印图形面积的函数");
+
+    let circle=Circle{r:5u8};
+    println!("圆形 {:#?} \n 其面积为：{:#?} \n",circle, area(&circle));
+
+    let triangle = Triangle{len:10, height:5};
+    println!("三角形 {:#?} \n 其面积为：{:#?} \n",triangle, area(&triangle));
+
+    let square = Square{len:10};
+    println!("正方形 {:#?} \n 其面积为：{:#?} \n",square, area(&square));
 
 }
 
@@ -73,34 +78,53 @@ fn sum(nums:&[u32]) -> Option<u32>{
  * 实现一个打印图形面积的函数，它接收一个可以计算面积的类型作为参数，比如圆形，三角形，正方形，需要用到泛型和泛型约束
  */
 pub trait Shape {
-    fn area(&self);
+    fn area(&self) -> f64;
 }
 
-struct Circle{}
+#[derive(Debug)]
+struct Circle<T>{
+    r: T
+}
 
-struct Triangle{}
+#[derive(Debug)]
+struct Triangle<T>{
+    len: T, //高
+    height: T, //底边
+}
 
-struct Square{}
+#[derive(Debug)]
+struct Square <T>{
+    len: T
+}
 
-impl Shape for Circle {
-    fn area(&self) {
-        println!("圆形面积");
+impl<T> Shape for Circle<T> 
+where T: Copy + Into<f64>
+{
+    fn area(&self) -> f64 {
+        let num = self.r.into();
+        PI * num * num 
     }
 }
 
-impl Shape for Triangle {
-    fn area(&self) {
-        println!("三角形面积");
+impl<T> Shape for Triangle<T>
+where T: Copy + Into<f64>
+{
+    fn area(&self) -> f64 {
+        let len = self.len.into();
+        let height = self.height.into();
+        (len * height) / 2.0f64
     }
 }
 
-impl Shape for Square {
-    fn area(&self) {
-        println!("正方形面积");
+impl<T> Shape for Square<T> 
+where T: Copy + Into<f64>
+{
+    fn area(&self) -> f64 {
+        let l = self.len.into();
+        l * l
     }
 }
 
-
-fn area<T:Shape>(shape: &T){
-    shape.area();
+fn area<T:Shape>(shape: &T) -> f64{
+    shape.area()
 }
